@@ -1,0 +1,250 @@
+﻿<Window x:Class="RentACar.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RentACar"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="2">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New" Click="NewClick" />
+                    <MenuItem Header="_Open" />
+                    <MenuItem Header="_Save" />
+                    <Separator />
+                    <MenuItem Header="_Exit" Click="ExitClick" />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        <TabControl Grid.Row="1" Grid.ColumnSpan="2" x:Name="tabControl">
+            <!-- Overzicht Klanten tab -->
+            <TabItem Header="Overzicht Klanten">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <ListView ItemsSource="{Binding klanten}"
+                            IsSynchronizedWithCurrentItem="True"
+                            Name="klantenListView"
+                            SelectionChanged="klantenListView_SelectionChanged" Grid.ColumnSpan="3">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Klantennummer" DisplayMemberBinding="{Binding Klantennummer}" />
+                                <GridViewColumn Header="Naam" Width="175">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0} {1}">
+                                                        <Binding Path="Voornaam" />
+                                                        <Binding Path="Achternaam" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Left" Margin="500,5,0,5" Grid.Column="2">
+                        <Button Content="Vorige 10" Margin="0,0,5,0" Click="Vorige10_Click" Width="100" Height="40" FontSize="16"/>
+                        <Button Content="Volgende 10" Margin="0,0,5,0" Click="Volgende10_Click" Width="100" Height="40" FontSize="16"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <!-- Klantenlijst tab -->
+            <TabItem Header="KlantenLijst">
+                <StackPanel>
+                    <ListView x:Name="klantenListViewer" SelectionChanged="klantenListView_SelectionChanged">
+
+                    </ListView>
+
+                    <!-- Gegevens van de geselecteerde klant -->
+                    <TextBlock Text="Naam:"  FontWeight="Bold"/>
+                    <TextBox x:Name="naamTextBox" />
+                    <TextBlock Text="Adres:"  FontWeight="Bold"/>
+                    <TextBox x:Name="adresTextBox" />
+                    <TextBlock Text="Stad:"  FontWeight="Bold"/>
+                    <TextBox x:Name="stadTextBox" />
+                    <TextBlock Text="Btw-nummer:"  FontWeight="Bold"/>
+                    <TextBox x:Name="btwNummerTextBox" />
+                </StackPanel>
+            </TabItem>
+
+            <!-- MaakReservering tab -->
+            <TabItem Header="MaakReservering">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="31*"/>
+                        <ColumnDefinition Width="207*"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="239*" />
+                        <ColumnDefinition Width="60"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <TextBlock Text="Klant Nr." FontWeight="Bold" Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" />
+                    <ComboBox x:Name="klantNummerComboBox" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Grid.ColumnSpan="3" SelectionChanged="klantNummerComboBox_SelectionChanged" />
+
+                    <TextBlock Text="Klant Naam" FontWeight="Bold" Grid.Row="0" Grid.Column="4" Margin="5,5,5,5" />
+                    <TextBox x:Name="klantNaamTextBox" Grid.Row="0" Grid.Column="5" Margin="5,5,5,5" Grid.ColumnSpan="2" IsReadOnly="True" />
+
+                    <TextBlock Text="Datum" FontWeight="Bold" Grid.Row="1" Grid.Column="0" Margin="5,5,5,5" />
+                    <DatePicker x:Name="datumPicker" Grid.Row="1" Grid.Column="1" Margin="5,5,5,5" Grid.ColumnSpan="3" />
+
+                    <TextBlock Text="Voertuig" FontWeight="Bold" Grid.Row="2" Grid.Column="0" Margin="5,5,5,5" />
+                    <ComboBox x:Name="autoComboBox" Grid.Row="2" Grid.Column="1" Margin="5,5,5,5" Grid.ColumnSpan="3" />
+
+                    <TextBlock Text="Startuur" FontWeight="Bold" Grid.Row="3" Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Center" />
+                    <Slider x:Name="timeSlider" Grid.Row="3" Grid.Column="1" Margin="5,0,5,0" Minimum="0" Maximum="1440" Interval="15" TickFrequency="15" ValueChanged="timeSlider_ValueChanged" VerticalAlignment="Center" Grid.ColumnSpan="2"/>
+                    <Label x:Name="timeLabel" Grid.Row="3" Grid.Column="3" Margin="5,0,5,0" ContentStringFormat="{}{0:hh\\:mm\\:ss}" VerticalAlignment="Center"/>
+
+                    <TextBlock Text="Totale HuurTijd" FontWeight="Bold" Grid.Row="3" Grid.Column="4" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                    <Slider x:Name="huurTijdSlider" Grid.Row="3" Grid.Column="5" Margin="5,0,5,0" Minimum="0" Maximum="11" SmallChange="1" ValueChanged="huurTijdSlider_ValueChanged" VerticalAlignment="Center"/>
+                    <Label x:Name="huurTijdLabel" Grid.Row="3" Grid.Column="6" Margin="5,0,5,0" Content="0 uur" VerticalAlignment="Center" />
+
+                    <TextBlock Text="Arrangement" FontWeight="Bold" Grid.Row="4" Grid.Column="0" Margin="5,5,5,5" />
+                    <ComboBox x:Name="ArrangementComboBox" Grid.Row="4" Grid.Column="1" Margin="5,5,5,5" Grid.ColumnSpan="3" SelectionChanged="ArrangementComboBox_SelectionChanged" />
+
+                    <TextBlock Text="Prijs Eerste Uur" FontWeight="Bold" Grid.Row="5" Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="eersteUurTextBlock" Grid.Row="5" Grid.Column="1" Margin="5,0,5,0" Grid.ColumnSpan="3" IsEnabled="False" VerticalAlignment="Center"/>
+
+                    <TextBlock Text="Totaal Kost Excl." FontWeight="Bold" Grid.Row="5" Grid.Column="4" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="totaalKostTextBlock" Grid.Row="5" Grid.Column="5" Margin="5,0,5,0" Grid.ColumnSpan="2" IsEnabled="False" VerticalAlignment="Center"/>
+
+                    <TextBlock Text="Vertrekplaats" FontWeight="Bold" Grid.Row="6" Grid.Column="0" Margin="5,5,5,5" />
+                    <ComboBox x:Name="startPlaatsComboBox" Grid.Row="6" Grid.Column="1" Margin="5,5,5,5" Grid.ColumnSpan="3" />
+
+                    <TextBlock Text="Aankomstplaats" FontWeight="Bold" Grid.Row="6" Grid.Column="4" Margin="5,5,5,5" />
+                    <ComboBox x:Name="eindPlaatsComboBox" Grid.Row="6" Grid.Column="5" Margin="5,5,5,5" Grid.ColumnSpan="2"/>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.Column="5" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                        <Button Content="Maak Leeg" Margin="0,0,10,10" Click="ClearButton_Click" Width="100" Height="40" FontSize="18" />
+                        <Button Content="Reserveer" Margin="0,0,10,10" Click="ReserveerButton_Click" Width="80" Height="40" FontSize="18"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <!-- Overzicht Reservering -->
+            <TabItem Header="Overzicht Reservering">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="60"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Reservering Nr." FontWeight="Bold" Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" />
+                    <TextBox x:Name="ORReserveringsnummerTextBox" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" IsReadOnly="True" />
+
+                    <TextBlock Text="Datum" FontWeight="Bold" Grid.Row="0" Grid.Column="3" Margin="5,5,5,5" />
+                    <TextBox x:Name="ORDatumTextBox" Grid.Row="0" Grid.Column="4" Margin="5,5,5,5" IsReadOnly="True" />
+
+                    <TextBlock Text="Klant Nr." FontWeight="Bold" Grid.Row="2" Grid.Column="0" Margin="5,5,5,5" />
+                    <TextBox x:Name="ORklantNummerTextBox" Grid.Row="2" Grid.Column="1" Margin="5,5,5,5" IsReadOnly="True" />
+
+                    <TextBlock Text="Klant Naam" FontWeight="Bold" Grid.Row="2" Grid.Column="3" Margin="5,5,5,5" />
+                    <TextBox x:Name="ORklantenNaamTextBox" Grid.Row="2" Grid.Column="4" Margin="5,5,5,5" IsReadOnly="True" />
+
+                    <TextBlock Text="Adres" FontWeight="Bold" Grid.Row="3" Grid.Column="0" Margin="5,5,5,5" />
+                    <TextBox x:Name="ORAdresTextBox" Grid.Row="3" Grid.Column="1" Margin="5,5,5,5" IsReadOnly="True" />
+
+                    <TextBlock Text="BTW Nr." FontWeight="Bold" Grid.Row="3" Grid.Column="3" Margin="5,5,5,5" />
+                    <TextBox x:Name="ORBTWnummerTextBox" Grid.Row="3" Grid.Column="4" Margin="5,5,5,5" IsReadOnly="True" />
+
+                    <TextBlock Text="Voertuig" FontWeight="Bold" Grid.Row="5" Grid.Column="0" Margin="5,5,5,5" />
+                    <TextBox x:Name="ORVoertuigTextBox" Grid.Row="5" Grid.Column="1" Margin="5,5,5,5" IsReadOnly="True" />
+
+                    <TextBlock Text="Arrangement" FontWeight="Bold" Grid.Row="5" Grid.Column="3" Margin="5,5,5,5" />
+                    <TextBox x:Name="ORArrangementTextBox" Grid.Row="5" Grid.Column="4" Margin="5,5,5,5" IsReadOnly="True" />
+
+                    <TextBlock Text="Begin Uur" FontWeight="Bold" Grid.Row="6" Grid.Column="0" Margin="5,5,5,5" />
+                    <TextBox x:Name="ORBeginuurTextBox" Grid.Row="6" Grid.Column="1" Margin="5,5,5,5" IsReadOnly="True"/>
+
+                    <TextBlock Text="Eind Uur" FontWeight="Bold" Grid.Row="6" Grid.Column="3" Margin="5,5,5,5" VerticalAlignment="Center"/>
+                    <TextBox x:Name="OREinduurTextBox" Grid.Row="6" Grid.Column="4" Margin="5,5,5,5" VerticalAlignment="Center" IsReadOnly="True"/>
+
+                    <TextBlock Text="Vertrekplaats" FontWeight="Bold" Grid.Row="7" Grid.Column="0" Margin="5,5,5,5" />
+                    <TextBox x:Name="ORStartPlaatsTExtBox" Grid.Row="7" Grid.Column="1" Margin="5,5,5,5" IsReadOnly="True" />
+
+                    <TextBlock Text="Aankomstplaats" FontWeight="Bold" Grid.Row="7" Grid.Column="3" Margin="5,5,5,5" />
+                    <TextBox x:Name="ORAankomstPlaatsTextBox" Grid.Row="7" Grid.Column="4" Margin="5,5,5,5" IsReadOnly="True"/>
+
+                    <TextBlock Text="Prijs Eerste Uur" FontWeight="Bold" Grid.Row="9" Grid.Column="0" Margin="5,5,5,5" VerticalAlignment="Center"/>
+                    <TextBox x:Name="ORPrijsEersteUurTextBox" Grid.Row="9" Grid.Column="1" Margin="5,5,5,5"  VerticalAlignment="Center" IsReadOnly="True"/>
+
+                    <TextBlock Text="Totaal Exclusief" FontWeight="Bold" Grid.Row="10" Grid.Column="0" Margin="5,5,5,5" VerticalAlignment="Center"/>
+                    <TextBox x:Name="ORTotaalExclusiefTextBox" Grid.Row="10" Grid.Column="1" Margin="5,5,5,5" IsReadOnly="True"/>
+
+                    <TextBlock Text="Totaal Inclusief" FontWeight="Bold" Grid.Row="10" Grid.Column="3" Margin="5,5,5,5" VerticalAlignment="Center"/>
+                    <TextBox x:Name="ORTotaalInclusiefTextBox" Grid.Row="10" Grid.Column="4" Margin="5,5,5,5" IsReadOnly="True"/>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="11" Grid.Column="4" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                        <Button Content="Vorige" Margin="0,0,10,10" Width="80" Height="40" FontSize="18" Click="Vorige_Click" />
+                        <Button Content="Volgende" Margin="0,0,10,10" Width="80" Height="40" FontSize="18" Click="Volgende_Click"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+
+        <DockPanel Grid.Row="2" Grid.ColumnSpan="2">
+            <StatusBar DockPanel.Dock="Bottom">
+                <StatusBarItem>
+                    <TextBlock Name="StatusBarTxt" />
+                </StatusBarItem>
+            </StatusBar>
+        </DockPanel>
+    </Grid>
+</Window>
